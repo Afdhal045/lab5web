@@ -4,638 +4,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Mini Project Kalkulator Nilai Mahasiswa - Praktikum JavaScript">
-    <title>Mini Project — Kalkulator Nilai Mahasiswa</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet">
+    <title>Kalkulator Nilai Mahasiswa</title>
     <style>
-        :root {
-            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
-            --card-bg: rgba(30, 41, 59, 0.75);
-            --card-border: rgba(255, 255, 255, 0.1);
-            --primary: #6366f1;
-            --primary-hover: #4f46e5;
-            --accent: #38bdf8;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --success-bg: rgba(16, 185, 129, 0.15);
-            --success-border: #10b981;
-            --success-text: #34d399;
-            --danger-bg: rgba(239, 68, 68, 0.15);
-            --danger-border: #ef4444;
-            --danger-text: #f87171;
-            --warning-bg: rgba(245, 158, 11, 0.15);
-            --warning-border: #f59e0b;
-            --warning-text: #fbbf24;
-            --radius-lg: 18px;
-            --radius-md: 12px;
-            --radius-sm: 8px;
-            --shadow-card: 0 20px 40px -15px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08);
-            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-
         body {
-            min-height: 100vh;
-            background: var(--bg-gradient);
-            color: var(--text-main);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 30px 16px;
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            line-height: 1.6;
         }
 
-        .container {
-            width: 100%;
-            max-width: 680px;
-        }
-
-        .header-section {
-            text-align: center;
-            margin-bottom: 24px;
-        }
-
-        .badge-tag {
-            display: inline-block;
-            padding: 6px 14px;
-            background: rgba(99, 102, 241, 0.15);
-            border: 1px solid rgba(99, 102, 241, 0.35);
-            border-radius: 999px;
-            font-size: 0.82rem;
-            font-weight: 600;
-            color: #a5b4fc;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+        .form-group {
             margin-bottom: 12px;
         }
 
-        h1 {
-            font-size: 2rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            background: linear-gradient(to right, #ffffff, #cbd5e1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 8px;
+        label {
+            display: inline-block;
+            width: 140px;
         }
 
-        .subtitle {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            line-height: 1.5;
+        input[type="number"] {
+            padding: 5px;
+            width: 120px;
         }
 
-        .main-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--card-border);
-            border-radius: var(--radius-lg);
-            padding: 32px;
-            box-shadow: var(--shadow-card);
-            margin-bottom: 24px;
-        }
-
-        /* Preset Scenarios */
-        .scenarios-box {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px dashed rgba(255, 255, 255, 0.15);
-            border-radius: var(--radius-md);
-            padding: 16px;
-            margin-bottom: 24px;
-        }
-
-        .scenarios-title {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .preset-buttons {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 8px;
-        }
-
-        .btn-preset {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #e2e8f0;
-            padding: 8px 12px;
-            border-radius: var(--radius-sm);
-            font-size: 0.8rem;
-            font-weight: 600;
+        button {
+            padding: 6px 12px;
+            margin-top: 10px;
+            margin-right: 5px;
             cursor: pointer;
-            transition: var(--transition);
-            text-align: left;
         }
 
-        .btn-preset:hover {
-            background: rgba(99, 102, 241, 0.2);
-            border-color: rgba(99, 102, 241, 0.4);
-            transform: translateY(-1px);
+        .error {
+            color: red;
+            font-weight: bold;
+            margin-top: 10px;
         }
 
-        .btn-preset span {
-            display: block;
-            font-size: 0.72rem;
-            color: var(--text-muted);
-            margin-top: 2px;
-            font-weight: 400;
-        }
-
-        /* Form Controls */
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-
-        @media (max-width: 600px) {
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .input-label {
-            font-size: 0.88rem;
-            font-weight: 600;
-            color: #e2e8f0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .bobot-tag {
-            font-size: 0.75rem;
-            color: var(--accent);
-            font-weight: 500;
-        }
-
-        .input-field {
-            background: rgba(15, 23, 42, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: var(--radius-sm);
-            padding: 12px 14px;
-            color: #fff;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: var(--transition);
-            outline: none;
-            width: 100%;
-        }
-
-        .input-field:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
-            background: rgba(15, 23, 42, 1);
-        }
-
-        .input-field::placeholder {
-            color: #64748b;
-            font-weight: 400;
-        }
-
-        /* Error Message Banner */
-        .alert-error {
+        #hasil {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #333;
+            width: 320px;
             display: none;
-            background: var(--danger-bg);
-            border: 1px solid var(--danger-border);
-            color: var(--danger-text);
-            padding: 12px 16px;
-            border-radius: var(--radius-sm);
-            font-size: 0.88rem;
-            margin-bottom: 20px;
-            align-items: center;
-            gap: 10px;
-            animation: fadeIn 0.2s ease-in;
+            background-color: #f9f9f9;
         }
 
-        /* Action Buttons */
-        .actions-group {
-            display: flex;
-            gap: 12px;
-        }
-
-        .btn-primary {
-            flex: 1;
-            background: linear-gradient(135deg, #6366f1, #4f46e5);
-            color: #fff;
-            border: none;
-            border-radius: var(--radius-sm);
-            padding: 14px 20px;
-            font-size: 0.98rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: var(--transition);
-            box-shadow: 0 4px 14px rgba(79, 70, 229, 0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .btn-primary:hover {
-            background: linear-gradient(135deg, #4f46e5, #4338ca);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.5);
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.08);
-            color: #cbd5e1;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: var(--radius-sm);
-            padding: 14px 20px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.14);
-            color: #fff;
-        }
-
-        /* Result Panel */
-        .result-container {
-            display: none;
-            margin-top: 28px;
-            padding-top: 24px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            animation: slideUp 0.35s ease-out;
-        }
-
-        .result-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-bottom: 18px;
-        }
-
-        @media (max-width: 500px) {
-            .result-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .result-card-main {
-            background: rgba(15, 23, 42, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: var(--radius-md);
-            padding: 20px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .result-label {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            color: var(--text-muted);
-            margin-bottom: 6px;
-            font-weight: 600;
-        }
-
-        .result-score {
-            font-size: 2.8rem;
-            font-weight: 800;
-            color: #fff;
-            letter-spacing: -0.03em;
-            line-height: 1;
-            margin-bottom: 6px;
-        }
-
-        .result-formula-info {
-            font-size: 0.76rem;
-            color: #64748b;
-        }
-
-        .result-meta-card {
-            background: rgba(15, 23, 42, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: var(--radius-md);
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            gap: 12px;
-        }
-
-        .meta-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .meta-title {
-            font-size: 0.88rem;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-
-        /* Predikat Badge */
-        .grade-badge {
-            font-size: 1.4rem;
-            font-weight: 800;
-            width: 44px;
-            height: 44px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 12px;
-        }
-
-        .grade-A {
-            background: rgba(16, 185, 129, 0.2);
-            color: #34d399;
-            border: 1px solid #10b981;
-        }
-
-        .grade-B {
-            background: rgba(56, 189, 248, 0.2);
-            color: #38bdf8;
-            border: 1px solid #38bdf8;
-        }
-
-        .grade-C {
-            background: rgba(245, 158, 11, 0.2);
-            color: #fbbf24;
-            border: 1px solid #f59e0b;
-        }
-
-        .grade-D {
-            background: rgba(249, 115, 22, 0.2);
-            color: #fb923c;
-            border: 1px solid #f97316;
-        }
-
-        .grade-E {
-            background: rgba(239, 68, 68, 0.2);
-            color: #f87171;
-            border: 1px solid #ef4444;
-        }
-
-        /* Status Badge */
-        .status-pill {
-            padding: 6px 14px;
-            border-radius: 999px;
-            font-size: 0.88rem;
-            font-weight: 700;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .status-lulus {
-            background: var(--success-bg);
-            border: 1px solid var(--success-border);
-            color: var(--success-text);
-        }
-
-        .status-gagal {
-            background: var(--danger-bg);
-            border: 1px solid var(--danger-border);
-            color: var(--danger-text);
-        }
-
-        /* Contribution Breakdown */
-        .breakdown-box {
-            background: rgba(15, 23, 42, 0.5);
-            border-radius: var(--radius-sm);
-            padding: 12px 16px;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-        }
-
-        .breakdown-title {
-            font-size: 0.78rem;
-            font-weight: 600;
-            color: #64748b;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 8px;
-        }
-
-        .breakdown-list {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            font-size: 0.82rem;
-            color: #cbd5e1;
-        }
-
-        .breakdown-item strong {
-            color: #fff;
-        }
-
-        /* Navigation Footer */
-        .nav-footer {
-            text-align: center;
-            font-size: 0.88rem;
-            color: var(--text-muted);
-        }
-
-        .nav-link {
-            color: #818cf8;
-            text-decoration: none;
-            font-weight: 600;
-            transition: var(--transition);
-        }
-
-        .nav-link:hover {
-            color: #c7d2fe;
-            text-decoration: underline;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(12px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .skenario-box {
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px dashed #aaa;
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <!-- Header -->
-        <header class="header-section">
-            <span class="badge-tag">Praktikum JavaScript</span>
-            <h1>Kalkulator Nilai Mahasiswa</h1>
-            <p class="subtitle">Hitung nilai akhir berbasis bobot (Tugas 30%, UTS 30%, UAS 40%), tentukan predikat, dan
-                status kelulusan secara otomatis.</p>
-        </header>
+    <h2>Mini Project — Kalkulator Nilai Mahasiswa</h2>
+    <p>Masukkan nilai tugas (30%), UTS (30%), dan UAS (40%) dalam rentang 0–100.</p>
 
-        <!-- Main Card -->
-        <main class="main-card">
-            <!-- Preset Scenarios (Requirement: Uji sekurang-kurangnya 3 skenario) -->
-            <div class="scenarios-box">
-                <div class="scenarios-title">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                    </svg>
-                    <span>Uji Cepat Skenario (Klik untuk Mencoba):</span>
-                </div>
-                <div class="preset-buttons">
-                    <button type="button" class="btn-preset" id="btnSkenario1" onclick="jalankanSkenarioUji(1)">
-                        Skenario 1 (Lulus Baik)
-                        <span>T: 85 | UTS: 78 | UAS: 88</span>
-                    </button>
-                    <button type="button" class="btn-preset" id="btnSkenario2" onclick="jalankanSkenarioUji(2)">
-                        Skenario 2 (Grade A)
-                        <span>T: 90 | UTS: 85 | UAS: 92</span>
-                    </button>
-                    <button type="button" class="btn-preset" id="btnSkenario3" onclick="jalankanSkenarioUji(3)">
-                        Skenario 3 (Belum Lulus)
-                        <span>T: 50 | UTS: 45 | UAS: 55</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Error Banner -->
-            <div id="errorAlert" class="alert-error" role="alert">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <line x1="12" y1="8" x2="12" y2="12"></line>
-                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                </svg>
-                <span id="errorMessage">Pesan error</span>
-            </div>
-
-            <!-- Form Input -->
-            <form id="formNilai" onsubmit="tanganiSubmit(event)">
-                <div class="form-grid">
-                    <!-- Nilai Tugas -->
-                    <div class="input-group">
-                        <label for="nilaiTugas" class="input-label">
-                            Nilai Tugas
-                            <span class="bobot-tag">Bobot 30%</span>
-                        </label>
-                        <input type="number" id="nilaiTugas" class="input-field" min="0" max="100" step="any"
-                            placeholder="0 - 100" required>
-                    </div>
-
-                    <!-- Nilai UTS -->
-                    <div class="input-group">
-                        <label for="nilaiUTS" class="input-label">
-                            Nilai UTS
-                            <span class="bobot-tag">Bobot 30%</span>
-                        </label>
-                        <input type="number" id="nilaiUTS" class="input-field" min="0" max="100" step="any"
-                            placeholder="0 - 100" required>
-                    </div>
-
-                    <!-- Nilai UAS -->
-                    <div class="input-group">
-                        <label for="nilaiUAS" class="input-label">
-                            Nilai UAS
-                            <span class="bobot-tag">Bobot 40%</span>
-                        </label>
-                        <input type="number" id="nilaiUAS" class="input-field" min="0" max="100" step="any"
-                            placeholder="0 - 100" required>
-                    </div>
-                </div>
-
-                <!-- Action Buttons -->
-                <div class="actions-group">
-                    <button type="submit" class="btn-primary" id="btnHitung">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5">
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                        </svg>
-                        Hitung Nilai Akhir
-                    </button>
-                    <button type="button" class="btn-secondary" id="btnReset" onclick="resetForm()">
-                        Reset
-                    </button>
-                </div>
-            </form>
-
-            <!-- Result Section (HTML Output) -->
-            <section id="resultSection" class="result-container" aria-live="polite">
-                <div class="result-grid">
-                    <!-- Score Card -->
-                    <div class="result-card-main">
-                        <span class="result-label">Nilai Akhir</span>
-                        <div class="result-score" id="hasilNilaiAkhir">0.00</div>
-                        <span class="result-formula-info">(30% Tugas + 30% UTS + 40% UAS)</span>
-                    </div>
-
-                    <!-- Predikat & Status Card -->
-                    <div class="result-meta-card">
-                        <div class="meta-row">
-                            <span class="meta-title">Predikat Nilai:</span>
-                            <span id="hasilPredikat" class="grade-badge grade-A">-</span>
-                        </div>
-                        <div class="meta-row">
-                            <span class="meta-title">Status Kelulusan:</span>
-                            <span id="hasilStatus" class="status-pill status-lulus">
-                                <span id="hasilStatusIcon">✓</span>
-                                <span id="hasilStatusText">Lulus</span>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Breakdown Calculation -->
-                <div class="breakdown-box">
-                    <div class="breakdown-title">Rincian Kontribusi Poin</div>
-                    <div class="breakdown-list">
-                        <div class="breakdown-item">Tugas: <strong id="poinTugas">0</strong></div>
-                        <div class="breakdown-item">UTS: <strong id="poinUTS">0</strong></div>
-                        <div class="breakdown-item">UAS: <strong id="poinUAS">0</strong></div>
-                    </div>
-                </div>
-            </section>
-        </main>
-
-        <!-- Navigation -->
-        <footer class="nav-footer">
-            <p>Kembali ke <a href="index.html" class="nav-link">Praktikum JavaScript Dasar (index.html)</a></p>
-        </footer>
+    <div class="form-group">
+        <label for="tugas">Nilai Tugas (30%):</label>
+        <input type="number" id="tugas" min="0" max="100" placeholder="0 - 100">
     </div>
 
-    <!-- Script Logic -->
+    <div class="form-group">
+        <label for="uts">Nilai UTS (30%):</label>
+        <input type="number" id="uts" min="0" max="100" placeholder="0 - 100">
+    </div>
+
+    <div class="form-group">
+        <label for="uas">Nilai UAS (40%):</label>
+        <input type="number" id="uas" min="0" max="100" placeholder="0 - 100">
+    </div>
+
+    <button type="button" onclick="prosesHitung()">Hitung Nilai</button>
+    <button type="button" onclick="resetForm()">Reset</button>
+
+    <p id="pesanError" class="error"></p>
+
+    <div id="hasil">
+        <h3>Hasil Perhitungan:</h3>
+        <p>Nilai Akhir: <strong id="nilaiAkhir">-</strong></p>
+        <p>Predikat: <strong id="predikat">-</strong></p>
+        <p>Status: <strong id="status">-</strong></p>
+    </div>
+
+    <div class="skenario-box">
+        <h3>Uji Skenario Nilai:</h3>
+        <button type="button" onclick="ujiSkenario(85, 78, 88)">Skenario 1 (85, 78, 88)</button>
+        <button type="button" onclick="ujiSkenario(90, 85, 90)">Skenario 2 (90, 85, 90)</button>
+        <button type="button" onclick="ujiSkenario(50, 45, 55)">Skenario 3 (50, 45, 55)</button>
+    </div>
+
+    <p style="margin-top: 25px;"><a href="index.html">&larr; Kembali ke index.html</a></p>
+
     <script src="kalkulator_nilai.js"></script>
 </body>
 
